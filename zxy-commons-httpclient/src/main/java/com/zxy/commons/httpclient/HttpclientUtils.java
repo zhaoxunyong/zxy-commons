@@ -31,12 +31,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -50,8 +51,10 @@ import org.apache.http.util.EntityUtils;
  * @since 1.0
  */
 public final class HttpclientUtils {
-//    private final static Logger LOGGER = LoggerFactory.getLogger(HttpclientUtils.class);
-
+    private final static int DEFAULT_CONNECTTIMEOUT = 5;
+//    private final static int DEFAULT_CONNECTIONREQUESTTIMEOUT = DEFAULT_CONNECTTIMEOUT;
+    private final static int DEFAULT_SOCKETTIMEOUT = 30;
+    
     private HttpclientUtils() {
     }
 
@@ -65,13 +68,35 @@ public final class HttpclientUtils {
      * @throws IOException IOException
      */
     public static boolean download(String url, String outputFile) throws ClientProtocolException, IOException {
+        return download(DEFAULT_CONNECTTIMEOUT, DEFAULT_SOCKETTIMEOUT, url, outputFile);
+    }
+
+    /**
+     * 通过url地址下载文件
+     * 
+     * @param connectTimeoutSec 连接超时时间(秒)
+     * @param socketTimeoutSec 处理数据超时时间(秒)
+     * @param url url地址
+     * @param outputFile 保存到本地的文件路径
+     * @return 是否下载成功
+     * @throws ClientProtocolException ClientProtocolException
+     * @throws IOException IOException
+     */
+    public static boolean download(int connectTimeoutSec, int socketTimeoutSec, String url, String outputFile) throws ClientProtocolException, IOException {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpResponse = null;
 
         InputStream in = null;
         OutputStream out = null;
         try {
-            httpClient = HttpClients.createDefault();
+//            httpClient = HttpClients.createDefault();
+            RequestConfig config = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeoutSec * 1000)
+                    .setConnectionRequestTimeout(connectTimeoutSec * 1000)
+                    .setSocketTimeout(socketTimeoutSec * 1000)
+                    .build();
+            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            
             HttpGet httpGet = new HttpGet(url);
             httpResponse = httpClient.execute(httpGet);
             HttpEntity entity = httpResponse.getEntity();
@@ -92,17 +117,26 @@ public final class HttpclientUtils {
     /**
      * 通过url地址下载文件，返回一个byte[]
      * 
+     * @param connectTimeoutSec 连接超时时间(秒)
+     * @param socketTimeoutSec 处理数据超时时间(秒)
      * @param url url地址
      * @return byte[]
      * @throws IOException IOException
      */
-    public static byte[] download(String url) throws IOException {
+    public static byte[] download(int connectTimeoutSec, int socketTimeoutSec, String url) throws IOException {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpResponse = null;
         InputStream in = null;
         ByteArrayOutputStream out = null;
         try {
-            httpClient = HttpClients.createDefault();
+//            httpClient = HttpClients.createDefault();
+            RequestConfig config = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeoutSec * 1000)
+                    .setConnectionRequestTimeout(connectTimeoutSec * 1000)
+                    .setSocketTimeout(socketTimeoutSec * 1000)
+                    .build();
+            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            
             HttpGet httpGet = new HttpGet(url);
             httpResponse = httpClient.execute(httpGet);
             HttpEntity entity = httpResponse.getEntity();
@@ -133,10 +167,36 @@ public final class HttpclientUtils {
      * @see org.apache.http.message.BasicNameValuePair
      */
     public static String post(String url, List<NameValuePair> params) throws ClientProtocolException, IOException {
+        return post(DEFAULT_CONNECTTIMEOUT, DEFAULT_SOCKETTIMEOUT, url, params);
+    }
+
+    /**
+     * Post url
+     * 
+     * @param connectTimeoutSec 连接超时时间(秒)
+     * @param socketTimeoutSec 处理数据超时时间(秒)
+     * @param url url地址
+     * @param params {@link org.apache.http.NameValuePair} params
+     *            <p>
+     *            example:{@code params.add(new BasicNameValuePair("id", "123456"));}
+     * @return 返回post获取后的结果
+     * @throws ClientProtocolException ClientProtocolException
+     * @throws IOException IOException
+     * @see org.apache.http.NameValuePair
+     * @see org.apache.http.message.BasicNameValuePair
+     */
+    public static String post(int connectTimeoutSec, int socketTimeoutSec, String url, List<NameValuePair> params) throws ClientProtocolException, IOException {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpResponse = null;
         try {
-            httpClient = HttpClients.createDefault();
+//            httpClient = HttpClients.createDefault();
+            RequestConfig config = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeoutSec * 1000)
+                    .setConnectionRequestTimeout(connectTimeoutSec * 1000)
+                    .setSocketTimeout(socketTimeoutSec * 1000)
+                    .build();
+            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            
             HttpPost httppost = new HttpPost(url);
 
             UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(params, Charsets.UTF_8);
@@ -160,10 +220,31 @@ public final class HttpclientUtils {
      * @throws IOException IOException
      */
     public static String get(String url) throws ClientProtocolException, IOException {
+        return get(DEFAULT_CONNECTTIMEOUT, DEFAULT_SOCKETTIMEOUT, url);
+    }
+
+    /**
+     * Get url
+     * 
+     * @param connectTimeoutSec 连接超时时间(秒)
+     * @param socketTimeoutSec 处理数据超时时间(秒)
+     * @param url url地址
+     * @return 返回post获取后的结果
+     * @throws ClientProtocolException ClientProtocolException
+     * @throws IOException IOException
+     */
+    public static String get(int connectTimeoutSec, int socketTimeoutSec, String url) throws ClientProtocolException, IOException {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpResponse = null;
         try {
-            httpClient = HttpClients.createDefault();
+//            httpClient = HttpClients.createDefault();
+            RequestConfig config = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeoutSec * 1000)
+                    .setConnectionRequestTimeout(connectTimeoutSec * 1000)
+                    .setSocketTimeout(socketTimeoutSec * 1000)
+                    .build();
+            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            
             HttpGet httpGet = new HttpGet(url);
 
             httpResponse = httpClient.execute(httpGet);
