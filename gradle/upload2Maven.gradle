@@ -7,9 +7,9 @@ publishing {
 				username user
                 password pwd
 			}
-            if(user == '' || pwd == '') {
+            /*if(user == '' || pwd == '') {
                 throw new NullPointerException("Username or password is empty!")
-            }
+            }*/
 			if (version.endsWith('-SNAPSHOT')){
 				url "${snapshotsUrl}"
 			} else {
