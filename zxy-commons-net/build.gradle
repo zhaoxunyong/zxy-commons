@@ -1,0 +1,12 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    testCompile project(":zxy-commons-test")
+    compile project(":zxy-commons-lang")
+    
+    compile 'commons-net:commons-net'
+    
+//    compile 'org.apache.commons:commons-vfs2:2.1'
+    compile 'com.jcraft:jsch:0.1.54'
+    
+}

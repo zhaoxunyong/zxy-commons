@@ -1,0 +1,8 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-lang")
+    testCompile project(":zxy-commons-test")
+    
+    compile 'org.apache.commons:commons-email'
+}

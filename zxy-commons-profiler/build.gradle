@@ -1,0 +1,7 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-lang")
+	compile project(":zxy-commons-spring")
+    compileOnly project(":zxy-commons-findbugs")
+}

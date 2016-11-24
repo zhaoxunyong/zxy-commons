@@ -1,0 +1,6 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'com.google.code.findbugs:annotations'
+    compile 'com.google.code.findbugs:jsr305'
+}

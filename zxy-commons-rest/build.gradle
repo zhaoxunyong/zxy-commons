@@ -1,0 +1,13 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'org.jboss.resteasy:resteasy-jaxrs'
+    compile 'org.jboss.resteasy:resteasy-client'
+    compile 'org.jboss.resteasy:resteasy-jackson-provider'
+    compile 'org.jboss.resteasy:resteasy-jaxb-provider'
+    compile 'org.jboss.resteasy:resteasy-netty'
+    compile 'org.jboss.resteasy:resteasy-jdk-http'
+    compile 'javax.validation:validation-api'
+//    compile 'org.apache.tomcat.embed:tomcat-embed-core'
+//    compile 'org.apache.tomcat.embed:tomcat-embed-logging-juli'
+}

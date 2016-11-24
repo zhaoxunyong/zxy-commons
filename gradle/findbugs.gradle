@@ -1,0 +1,19 @@
+apply plugin: 'findbugs'
+
+// https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html
+findbugs {
+    toolVersion = "3.0.1"
+    ignoreFailures = true
+//    reportsDir = file("$project.buildDir/findbugsReports")
+    effort = "default"
+    reportLevel = "medium"
+    includeFilter = file("$rootProject.projectDir/config/findbugs/include_filter.xml")
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled true
+        html.enabled false
+//        html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+    }
+}

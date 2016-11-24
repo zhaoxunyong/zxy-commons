@@ -1,0 +1,10 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'org.eclipse.jetty:jetty-server'
+    compile 'org.eclipse.jetty:jetty-webapp'
+    compile 'org.eclipse.jetty:jetty-continuation'
+    compile 'org.eclipse.jetty:jetty-jsp'
+
+    compile 'org.slf4j:slf4j-api'
+}

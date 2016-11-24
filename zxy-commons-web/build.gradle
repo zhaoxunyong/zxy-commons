@@ -1,0 +1,32 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-spring")
+    compile project(":zxy-commons-lang")
+    compile project(":zxy-commons-json")
+    
+    compile 'org.springframework:spring-webmvc'
+    compile 'org.springframework:spring-context-support'
+    compile 'com.baidu:fis-velocity-tools'
+    compile 'org.apache.velocity:velocity'
+    compile('org.apache.velocity:velocity-tools') {
+        exclude group: 'org.apache.struts', module: '*'
+    }
+    // com.baidu.fis.util.MapJson dependencies
+    compile 'com.alibaba:fastjson'
+
+//    compile 'org.springframework.session:spring-session-data-redis'
+//
+//    compile 'org.springframework.security:spring-security-web'
+//    compile 'org.springframework.security:spring-security-config'
+//    compile 'org.springframework.security:spring-security-config'
+
+    compile 'org.apache.shiro:shiro-spring'
+    compile 'org.crazycake:shiro-redis'
+    
+    compileOnly 'javax.servlet:javax.servlet-api'
+    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api'
+    
+    
+    testCompile 'com.jayway.jsonpath:json-path'
+}

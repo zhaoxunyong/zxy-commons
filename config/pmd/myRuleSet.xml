@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset for PMD" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+	<description>Custom ruleset for PMD</description>
+
+	<!-- <exclude-pattern>.*/some/package/.*</exclude-pattern> -->
+	<!-- <exclude-pattern>.*/some/other/package/FunkyClassNamePrefix.*</exclude-pattern> -->
+	<!-- <include-pattern>.*/some/package/ButNotThisClass.*</include-pattern> -->
+
+	<!-- We'll use the entire 'strings' ruleset -->
+	<rule ref="rulesets/java/basic.xml" />
+
+	<!-- We'll use the entire 'braces' ruleset -->
+	<rule ref="rulesets/java/braces.xml" />
+
+	<!-- We'll use the entire 'clone' ruleset -->
+	<rule ref="rulesets/java/clone.xml" />
+
+	<!-- <rule ref="rulesets/java/codesize.xml" /> -->
+	<!-- <rule ref="rulesets/java/comments.xml" /> -->
+
+
+	<!-- We'll use the entire 'controversial' ruleset -->
+	<rule ref="rulesets/java/controversial.xml">
+		<exclude name="OnlyOneReturn" />
+		<exclude name="AvoidUsingShortType" />
+		<exclude name="NullAssignment" />
+		<exclude name="DataflowAnomalyAnalysis" />
+		<exclude name="AtLeastOneConstructor" />
+		<exclude name="AvoidLiteralsInIfCondition" />
+		<exclude name="UseConcurrentHashMap" />
+		<exclude name="UseObjectForClearerAPI" />
+		
+		<exclude name="AtLeastOneConstructor" />
+		<exclude name="CallSuperInConstructor" />
+		<exclude name="AvoidUsingShortType" />
+		<exclude name="AvoidUsingVolatile" />
+		<exclude name="AvoidUsingNativeCode" />
+	</rule>
+
+	<!-- We'll use the entire 'design' ruleset -->
+	<rule ref="rulesets/java/design.xml">
+		<exclude name="GodClass" />
+		<exclude name="ConfusingTernary" />
+		<exclude name="UseVarargs" />
+		<exclude name="AccessorClassGeneration" />
+	</rule>
+
+	<!-- We'll use the entire 'empty' ruleset -->
+	<rule ref="rulesets/java/empty.xml">
+		<exclude name="EmptyIfStmt" />
+	</rule>
+
+	<!-- We'll use the entire 'finalizers' ruleset -->
+	<rule ref="rulesets/java/finalizers.xml" />
+
+	<!-- We'll use the entire 'imports' ruleset -->
+	<rule ref="rulesets/java/imports.xml">
+		<priority>3</priority>
+		<properties>
+			<property name="maximumStaticImports" type="Integer" value="10" />
+		</properties>
+	</rule>
+
+	<!-- We'll use the entire 'javabeans' ruleset -->
+	<rule ref="rulesets/java/javabeans.xml">
+		<exclude name="BeanMembersShouldSerialize" />
+	</rule>
+
+	<!-- We'll use the entire 'junit' ruleset -->
+	<rule ref="rulesets/java/junit.xml" />
+
+	<!-- We'll use the entire 'migrating' ruleset -->
+	<rule ref="rulesets/java/migrating.xml" />
+
+	<!-- <rule ref="rulesets/java/ct_naming.xml"/> -->
+	<!-- We'll use the entire 'naming' ruleset -->
+	<rule ref="rulesets/java/naming.xml/ClassNamingConventions" />
+	<rule ref="rulesets/java/naming.xml/GenericsNaming" />
+<!-- 	<rule ref="rulesets/java/naming.xml/AbstractNaming" /> -->
+	<rule ref="rulesets/java/naming.xml/AvoidDollarSigns" />
+	<rule ref="rulesets/java/naming.xml/MethodWithSameNameAsEnclosingClass" />
+	<rule ref="rulesets/java/naming.xml/SuspiciousHashcodeMethodName" />
+	<rule ref="rulesets/java/naming.xml/SuspiciousConstantFieldName" />
+	<rule ref="rulesets/java/naming.xml/SuspiciousEqualsMethodName" />
+	<rule ref="rulesets/java/naming.xml/AvoidFieldNameMatchingTypeName" />
+	<rule ref="rulesets/java/naming.xml/AvoidFieldNameMatchingMethodName" />
+
+	<rule ref="rulesets/java/naming.xml/NoPackage" />
+	<rule ref="rulesets/java/naming.xml/PackageCase" />
+
+	<rule ref="rulesets/java/naming.xml/BooleanGetMethodName" />
+	<rule ref="rulesets/java/naming.xml/MisleadingVariableName" />
+	<rule ref="rulesets/java/naming.xml/VariableNamingConventions" />
+	<rule ref="rulesets/java/naming.xml/MethodNamingConventions" />
+	<rule ref="rulesets/java/naming.xml/ShortMethodName" />
+	<rule ref="rulesets/java/naming.xml/ShortClassName" />
+
+	<rule ref="rulesets/java/naming.xml/ShortVariable">
+		<!--<properties>
+			<property name="minimum" value="2" />
+		</properties>-->
+		<properties>
+          <property name="xpath">
+              <value>
+                  <![CDATA[
+					//VariableDeclaratorId[string-length(@Image) < 2]
+					 [not(ancestor::ForInit)]
+					 [not(../../VariableDeclarator and ../../../LocalVariableDeclaration and ../../../../ForStatement)]
+					 [not((ancestor::FormalParameter) and (ancestor::TryStatement))]
+                  ]]>
+              </value>
+          </property>
+      </properties>
+	</rule>
+	<rule ref="rulesets/java/naming.xml/LongVariable">
+		<properties>
+			<property name="minimum" value="40" />
+		</properties>
+	</rule>
+
+	<!-- We'll use the entire 'optimizations' ruleset -->
+	<rule ref="rulesets/java/optimizations.xml">
+		<exclude name="LocalVariableCouldBeFinal" />
+		<exclude name="MethodArgumentCouldBeFinal" />
+		<exclude name="UseStringBufferForStringAppends" />
+	</rule>
+
+	<!-- We'll use the entire 'strictexception' ruleset -->
+	<rule ref="rulesets/java/strictexception.xml">
+		<exclude name="SignatureDeclareThrowsException" />
+		<exclude name="AvoidCatchingGenericException" />
+	</rule>
+
+	<!-- We'll use the entire 'strings' ruleset -->
+	<rule ref="rulesets/java/strings.xml" />
+
+	<!-- We'll use the entire 'sunsecure' ruleset -->
+	<rule ref="rulesets/java/sunsecure.xml" />
+
+	<!-- We'll use the entire 'typeresolution' ruleset -->
+	<rule ref="rulesets/java/typeresolution.xml" />
+
+	<!-- We'll use the entire 'unnecessary' ruleset -->
+	<rule ref="rulesets/java/unnecessary.xml">
+		<exclude name="UselessParentheses" />
+	</rule>
+
+
+	<!-- We'll use the entire 'unusedcode' ruleset -->
+	<rule ref="rulesets/java/unusedcode.xml/UnusedLocalVariable" />
+	<rule ref="rulesets/java/unusedcode.xml/UnusedPrivateField" />
+	<rule ref="rulesets/java/unusedcode.xml/UnusedPrivateMethod" />
+	<rule ref="rulesets/java/unusedcode.xml/UnusedFormalParameter" />
+	<!-- <rule ref="rulesets/java/unusedcode.xml/UnusedModifier"/> -->
+
+</ruleset>

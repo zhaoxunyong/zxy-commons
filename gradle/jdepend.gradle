@@ -1,0 +1,16 @@
+apply plugin: 'jdepend'
+    
+jdepend {
+    toolVersion = "2.9.1"
+    ignoreFailures = true
+    
+ }
+
+//tasks.withType(JDepend) {
+//    reports {
+//        text.enabled = true
+//        xml.enabled = false
+//    }
+//    
+////    classesDir sourceSets.main.output.classesDir
+//}

@@ -1,0 +1,26 @@
+//ext {
+//    decryptMasterPassword = mpd.getDecryptPassword(password, settingsSecurity)
+//    user = username
+//    pwd = decryptMasterPassword
+//}
+
+//def getAuth(mpd) {
+//        def userAndPwd = ['', '']
+//    if(!hasProperty("username") || !hasProperty("password") || !hasProperty("settingsSecurity")) {
+//        logger.warn "Could not get unknown property 'username' or 'password' or 'settingsSecurity'"
+//    } else {
+//        def decryptMasterPassword = mpd.getDecryptPassword(password, settingsSecurity)
+//        userAndPwd.clear()
+//        userAndPwd << username
+//        userAndPwd << decryptMasterPassword
+//    }
+//    return userAndPwd
+//}
+
+ext {
+//    def (authUser, authPwd) = getAuth(mpd)
+//    user = authUser
+//    pwd = authPwd
+    user = username
+    pwd = password
+}

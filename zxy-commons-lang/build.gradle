@@ -1,0 +1,17 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    testCompile project(":zxy-commons-test")
+    compileOnly project(":zxy-commons-findbugs")
+    
+    compile 'org.slf4j:slf4j-api'
+    compile 'com.google.guava:guava'
+    compile 'io.reactivex:rxjava'
+    compile 'com.eaio.uuid:uuid'
+    compile 'commons-lang:commons-lang'
+    compile 'commons-io:commons-io'
+    compile 'commons-codec:commons-codec'
+    compile 'commons-beanutils:commons-beanutils'
+    compile 'com.esotericsoftware:kryo'
+    
+}

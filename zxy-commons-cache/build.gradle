@@ -1,0 +1,10 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-spring")
+    compile project(":zxy-commons-json")
+    compile project(":zxy-commons-redis")
+    testCompile project(":zxy-commons-test")
+    
+    compile 'org.springframework.data:spring-data-redis'
+}

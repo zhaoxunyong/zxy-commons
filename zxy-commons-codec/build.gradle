@@ -1,0 +1,10 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'com.google.guava:guava'
+    compile 'commons-lang:commons-lang'
+    compile 'commons-io:commons-io'
+    compile 'commons-codec:commons-codec'
+    compile 'bouncycastle:bcprov-jdk16'
+    compile 'org.slf4j:slf4j-api'
+}

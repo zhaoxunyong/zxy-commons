@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<FindBugsFilter>  
+<!-- 	http://blog.csdn.net/song1990919/article/details/20561333 -->
+<!-- 	https://examples.javacodegeeks.com/core-java/findbugs-eclipse-example/ -->
+<!-- 	http://findbugs.sourceforge.net/manual/filter.html -->
+<!-- 	http://gleclaire.github.io/findbugs-maven-plugin/usage.html -->
+<!-- 	http://blog.csdn.net/wpyily/article/details/51154167 -->
+<!-- 	http://findbugs.sourceforge.net/bugDescriptions.html -->
+    <!-- 包过滤 -->  
+     <Match>  
+<!--          <Package name="~com\.zxy\.commons\..*" />  -->
+<!--          <Bug pattern="NP_ALWAYS_NULL" /> -->
+<!--          <BugCode name="NP" /> -->
+<!--          <Bug code="DE,UrF,SIC" /> -->
+
+<!--  		 CORRECTNESS: Correctness -->
+<!--  		 NOISE: Bogus random noise -->
+<!--  		 SECURITY: Security -->
+<!--  		 BAD_PRACTICE: Bad practice -->
+<!--  		 STYLE: Dodgy code -->
+<!--  		 PERFORMANCE: Performance -->
+<!--  		 MALICIOUS_CODE: Malicious code vulnerability -->
+<!--  		 MT_CORRECTNESS: Multithreaded correctness -->
+<!--  		 I18N: Internationalization -->
+<!--  		 EXPERIMENTAL: Experimental -->
+ 		 <Bug category="CORRECTNESS, BAD_PRACTICE, STYLE, PERFORMANCE, MT_CORRECTNESS, PERFORMANCE" Rank="15" />
+     </Match>
+     
+<!-- 	 <Match> -->
+<!-- 	 	<Not> -->
+<!-- 	 		<Package name="~com\.zxy\.commons\..*" /> -->
+<!-- 	 	</Not> -->
+<!-- 	 </Match> -->
+</FindBugsFilter> 

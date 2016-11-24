@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+			http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	
+	<cache:annotation-driven />
+	
+	<import resource="classpath:commons-spring.xml" />
+	
+	<context:property-placeholder location="classpath:redis-cache.properties" ignore-unresolvable="true" />
+	
+	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"
+		c:redisOperations-ref="redisTemplate" p:usePrefix="true">
+		<!-- <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager" c:_0-ref="redisTemplate"> -->
+		<!-- <constructor-arg index="0" ref="redisTemplate"></constructor-arg> -->
+		<!-- unit: seconds -->
+		<property name="defaultExpiration" value="${redis.default.seconds.expires}" />
+<!-- 		<property name="expires"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="users" value="${redis.expires}" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
+	</bean> 
+        
+	<!-- redis 相关配置 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.maxTotal}" />
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="minIdle" value="${redis.minIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWait}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
+
+	<bean id="connectionFactory"
+	class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+	p:host-name="${redis.host}" p:port="${redis.port}" 
+	p:password="${redis.password}" p:database="${redis.database}" p:pool-config-ref="poolConfig" />
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+		
+	<bean id="redisHelper" class="com.zxy.commons.cache.RedisHelper">
+		<property name="redisTemplate" ref="redisTemplate" />
+	</bean>
+</beans>

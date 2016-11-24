@@ -1,0 +1,52 @@
+apply plugin: 'pmd'
+apply plugin: 'cpd'
+    
+// http://stackoverflow.com/questions/20710704/gradles-pmd-plugin-what-are-acceptable-arguments
+pmd {
+    toolVersion = "5.4.1"
+    consoleOutput = false
+//        sourceSets = [sourceSets.main]
+    ignoreFailures = true
+////        ruleSets = [ "java-basic", "java-strings", "java-braces" ]
+//        ruleSets = ["basic", "strings", "braces"]
+    ruleSetFiles = files("${rootDir}/config/pmd/myRuleSet.xml")
+    
+ }
+//    
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+//    source = fileTree('src').matching {
+//    source = files('src/main', 'src/test').getAsFileTree().matching {
+    source = files('src/main').filter {
+        include '**/*.java'
+        exclude '**/test/**'
+        exclude '**/resources/**'
+        exclude '**/conf/**'
+    }
+}
+
+// optional - settings for every CPD task
+cpd {
+    language = 'java'
+    toolVersion = '5.4.1'
+    ignoreFailures = true
+}
+
+// optional - default report is xml and default sources are 'main' and 'test'
+cpdCheck {
+    reports {
+        text.enabled = false
+        xml.enabled = true
+    }
+//    source = sourceSets.main.allJava // only java, groovy and scala classes in 'main' sourceSets
+    source = files('src/main').filter {
+        include '**/*.java'
+        exclude '**/test/**'
+        exclude '**/resources/**'
+        exclude '**/conf/**'
+    }
+}

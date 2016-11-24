@@ -1,0 +1,7 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compileOnly project(":zxy-commons-findbugs")
+    
+    compile 'org.slf4j:slf4j-log4j12'
+}

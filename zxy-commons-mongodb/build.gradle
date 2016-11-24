@@ -1,0 +1,8 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    testCompile project(":zxy-commons-test")
+    
+    compile 'org.springframework.data:spring-data-mongodb'
+    compile 'org.slf4j:slf4j-api'
+}

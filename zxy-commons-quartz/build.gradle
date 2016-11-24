@@ -1,0 +1,11 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-spring")
+    compile 'org.quartz-scheduler:quartz'
+    compile 'org.springframework:spring-tx'
+    compile 'org.springframework:spring-jdbc'
+    compile 'org.springframework:spring-context-support'
+    compile 'com.alibaba:druid'
+    compile 'mysql:mysql-connector-java'
+}

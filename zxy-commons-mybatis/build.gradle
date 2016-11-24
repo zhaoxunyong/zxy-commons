@@ -1,0 +1,13 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-spring")
+    
+    compile 'org.slf4j:slf4j-api'
+    compile 'com.google.guava:guava'
+    compile 'com.alibaba:druid'
+    compile 'mysql:mysql-connector-java'
+    compile 'org.springframework:spring-jdbc'
+    compile 'org.mybatis:mybatis-spring'
+    compile 'org.mybatis:mybatis'
+}

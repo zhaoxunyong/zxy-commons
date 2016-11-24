@@ -1,0 +1,9 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-lang")
+    testCompile project(":zxy-commons-test")
+    
+    compile 'com.googlecode.xmemcached:xmemcached'
+    compile 'org.elasticsearch.plugin:delete-by-query:2.1.1'
+}

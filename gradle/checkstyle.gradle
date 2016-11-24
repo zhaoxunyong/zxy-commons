@@ -1,0 +1,8 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = '6.16'
+    configFile = new File("${rootDir}/config/checkstyle/checkstyle.xml")
+    configProperties.samedir = configFile.parentFile
+    ignoreFailures = true
+}

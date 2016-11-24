@@ -1,0 +1,10 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'junit:junit'
+    compile 'org.hamcrest:hamcrest-all'
+    compile 'org.mockito:mockito-core'
+    compile 'org.springframework:spring-test'
+    compile 'com.h2database:h2'
+    compile 'com.github.kstyrc:embedded-redis'
+}

@@ -1,0 +1,17 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-lang")
+	compile project(":zxy-commons-json")
+    testCompile project(":zxy-commons-test")
+    
+    compile 'org.apache.kafka:kafka_2.11'
+    compile('org.apache.zookeeper:zookeeper') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+	compile('com.101tec:zkclient') {
+	    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+	}
+    
+    compileOnly 'org.slf4j:slf4j-log4j12'
+}

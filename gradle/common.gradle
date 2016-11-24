@@ -1,0 +1,160 @@
+apply plugin: "maven-publish"
+
+allprojects {
+	apply plugin: 'eclipse'
+	apply plugin: 'java'
+	apply plugin: 'maven'
+    apply plugin: "io.spring.dependency-management"
+    
+    apply from: "${rootDir}/gradle/checkstyle.gradle"
+    apply from: "${rootDir}/gradle/pmd.gradle"
+    apply from: "${rootDir}/gradle/findbugs.gradle"
+    apply from: "${rootDir}/gradle/jacoco.gradle"
+    apply from: "${rootDir}/gradle/jdepend.gradle"
+    
+    
+	configurations.all {
+		resolutionStrategy {
+			cacheDynamicVersionsFor 0, 'seconds'
+			cacheChangingModulesFor 0, 'seconds'
+//          force 'asm:asm-all:3.3.1', 'commons-io:commons-io:1.4'
+//            force 'org.apache.zookeeper:zookeeper:3.4.8'
+		}
+        
+	}
+
+	javadoc {
+		options {
+			locale = 'zh_CN'
+			encoding = 'UTF-8'
+			docFilesSubDirs = true
+			failOnError = false
+			excludeDocFilesSubDir '.git'
+		}
+	}
+
+    /*task aggregateJavadocs(type: com.zxy.plugins.aggregate.AggregateJavadocs) {
+        destinationDir rootProject.file("$rootProject.buildDir/docs/javadoc")
+        failOnErrors = false
+    }
+
+    task dashboard(type: GenerateBuildDashboard, dependsOn: [check]) {
+        aggregate pmdMain, checkstyleMain, findbugsMain, jdependMain
+        reports {
+            html {
+                destination "build/dashboard/html"
+            }
+        }
+    }*/
+    
+    task sourceJar (type : Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    
+	sourceCompatibility = javaVersion
+	targetCompatibility = javaVersion
+	
+	jar.manifest {
+		attributes('Implementation-Title': name,
+				'Implementation-Version': version,
+				'Built-By': System.getProperty('user.name'),
+				'Built-JDK': System.getProperty('java.version'),
+				'Source-Compatibility': sourceCompatibility,
+				'Target-Compatibility': targetCompatibility)
+	}
+	
+	sourceCompatibility = javaVersion
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    
+    eclipse {
+        project {
+            natures 'org.eclipse.jdt.core.javanature', 'net.sf.eclipsecs.core.CheckstyleNature', 'ch.acanda.eclipse.pmd.builder.PMDNature', 'edu.umd.cs.findbugs.plugin.eclipse.findbugsNature'
+            
+            buildCommand 'org.eclipse.jdt.core.javabuilder'
+            buildCommand 'net.sf.eclipsecs.core.CheckstyleBuilder'
+            buildCommand 'ch.acanda.eclipse.pmd.builder.PMDBuilder'
+            buildCommand 'edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder'
+        }
+    }
+
+	repositories { 
+		mavenLocal()
+
+		maven {
+			//credentials {
+	        //    username "myusername"
+	        //    password "mypassword"
+        	//}
+			url groupUrl 
+		} 
+	}
+}
+
+ext.withXml = { pom ->
+    pom.packaging = "jar"
+    pom.withXml {
+        asNode().children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+            name name
+
+            description "The project of zxy-commons-dependency"
+            url "https://github.com/zhaoxunyong/zxy-commons-bom"
+            inceptionYear 2016
+
+            scm {
+                url "https://github.com/zhaoxunyong/zxy-commons-bom.git"
+                connection "https://github.com/zhaoxunyong/zxy-commons-bom.git"
+                developerConnection "https://github.com/zhaoxunyong/zxy-commons-bom.git"
+            }
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/license/LICENSE-2.0.txt'
+                    distribution 'repo'
+                    comments 'A business-friendly OSS license'
+                }
+            }
+
+            organization {
+                name '赵训勇'
+                url 'https://github.com/zhaoxunyong'
+            }
+
+            developers {
+                developer {
+                    id 'zhaoxunyong'
+                    name 'zhaoxunyong'
+                    email 'zhaoxunyong@qq.com'
+                    url "https://github.com/zhaoxunyong"
+                    // https://issues.gradle.org/browse/GRADLE-2719
+                    organizationUrl "https://github.com/zhaoxunyong"
+                }
+            }
+            
+//            modules {
+//                subprojects.each {
+//                    module "${it.name}"
+//                }
+//            }
+        }
+        
+        //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+        //              configurations.compile.allDependencies.each {
+        
+        def dependenciesNode = asNode().appendNode('dependencies')
+        subprojects.each {
+            def dependencyNode = dependenciesNode.appendNode('dependency')
+            dependencyNode.appendNode('groupId', it.group)
+            dependencyNode.appendNode('artifactId', it.name)
+            dependencyNode.appendNode('version', it.version)
+        }
+    }
+}
+
+// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.wrapper.Wrapper.html
+// https://docs.gradle.org/current/dsl/org.gradle.api.invocation.Gradle.html
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}

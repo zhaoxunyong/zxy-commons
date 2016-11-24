@@ -1,0 +1,12 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'com.alibaba:dubbo'
+    compile 'org.javassist:javassist'
+    compile 'org.apache.zookeeper:zookeeper'
+    compile 'io.reactivex:rxjava'
+    
+    compile project(":zxy-commons-spring")
+    
+    compile 'org.slf4j:slf4j-api'
+}

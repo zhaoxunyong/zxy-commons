@@ -1,0 +1,106 @@
+buildscript {
+    repositories {
+        maven {
+            url groupUrl
+//            url "http://dl.bintray.com/eddgrant/maven"
+        }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
+//        classpath 'com.eddgrant:maven-password-decrypter:0.0.4'
+        classpath 'de.aaschmid:gradle-cpd-plugin:1.0'
+    }
+}
+//ext.mpd = new com.eddgrant.mpd.MavenPasswordDecrypter()
+
+apply from: 'gradle/common.gradle'
+apply from: 'gradle/mavenauth.gradle'
+
+subprojects {
+	sourceSets {
+		main.java.srcDirs = ["src/main/java"]
+		main.resources.srcDirs = ["src/main/resources"]
+        
+        test.java.srcDirs = ["src/test/java"]
+//        test.java.excludes = ["**/*IT.*"]
+        test.resources.srcDirs = ["src/test/resources"]
+        
+        integTest.java.srcDirs = ["src/integTest/java"]
+//        integTest.java.includes = ["**/*IT.*"]
+        integTest.resources.srcDirs = ["src/integTest/resources"]
+	}
+    
+    task integTest(type: Test) {
+        testClassesDir = sourceSets.integTest.output.classesDir
+        classpath = sourceSets.integTest.runtimeClasspath
+        reports {
+            html.enabled true
+            html.destination "${buildDir}/reports/integTests"
+    //        html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+        }
+    }
+    
+//    check.dependsOn integTest
+    plugins.withType(JavaBasePlugin) { // <- just required if 'java' plugin is applied within subproject
+        check.dependsOn(integTest)
+    }
+    
+    dependencyManagement {
+        imports {
+            mavenBom "com.zxy:zxy-commons-bom:${commonsBomVersion}"
+        }
+    }
+    
+    dependencies {
+        integTestCompile sourceSets.main.output
+        integTestCompile configurations.testCompile
+        integTestCompile sourceSets.test.output
+        integTestRuntime configurations.testRuntime
+    }
+
+    
+    /*jar {
+        into("META-INF/maven/$project.group/$project.archivesBaseName") {
+            from new File(project.buildDir, 'publications/maven')
+            rename "pom-default.xml", "pom.xml"
+    
+        }
+    }*/
+}
+
+// 将子项目中的几个项目优先级提升
+evaluationDependsOn(':zxy-commons-findbugs')
+evaluationDependsOn(':zxy-commons-test')
+
+publishing {
+	repositories {
+		maven {
+			credentials {
+				username user
+                password pwd
+			}
+            if(user == '' || pwd == '') {
+                throw new NullPointerException("Username or password is empty!")
+            }
+			if (version.endsWith('-SNAPSHOT')){
+				url "${snapshotsUrl}"
+			} else {
+				url "${releaseUrl}"
+			}
+//            url "file:///Developer/repo"
+		}
+	}
+	publications {
+		mavenCustom(MavenPublication) {
+            from components.java
+            withXml(pom)
+		}
+	}
+}
+
+//[Test, Pmd, Checkstyle].each {
+//[Test, Pmd].each {
+//    tasks.withType(it) {
+//        task -> enabled = !gradle.startParameter.taskNames.contains('releaseJar') && !gradle.startParameter.taskNames.contains('packDeployJar')
+//    }
+//}

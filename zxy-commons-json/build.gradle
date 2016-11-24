@@ -1,0 +1,12 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    testCompile project(":zxy-commons-test")
+    
+    compile 'com.google.guava:guava'
+    compile 'commons-lang:commons-lang'
+    compile 'com.fasterxml.jackson.core:jackson-core'
+    compile 'com.fasterxml.jackson.core:jackson-annotations'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'org.codehaus.jackson:jackson-mapper-asl'
+}

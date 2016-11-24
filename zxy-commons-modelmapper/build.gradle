@@ -1,0 +1,14 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+	compile project(":zxy-commons-spring")
+    testCompile project(":zxy-commons-test")
+	/*compile(libraries.elasticsearch) {
+		exclude (group:'org.antlr', module: 'antlr-runtime')
+		//		exclude (group:'org.ow2.asm', module: 'asm')
+		//		exclude (group:'org.ow2.asm', module: 'asm-commons')
+	}*/
+    
+    compile 'org.modelmapper:modelmapper'
+    compile 'org.elasticsearch.plugin:delete-by-query:2.1.1'
+}
