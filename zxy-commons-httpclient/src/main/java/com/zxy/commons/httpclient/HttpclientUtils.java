@@ -36,6 +36,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
@@ -109,8 +110,8 @@ public final class HttpclientUtils {
         } finally {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpResponse);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpClient);
+            HttpClientUtils.closeQuietly(httpResponse);
+            HttpClientUtils.closeQuietly(httpClient);
         }
     }
 
@@ -148,8 +149,8 @@ public final class HttpclientUtils {
         } finally {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpResponse);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpClient);
+            HttpClientUtils.closeQuietly(httpResponse);
+            HttpClientUtils.closeQuietly(httpClient);
         }
     }
 
@@ -206,8 +207,8 @@ public final class HttpclientUtils {
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, Charsets.UTF_8);
         } finally {
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpResponse);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpClient);
+            HttpClientUtils.closeQuietly(httpResponse);
+            HttpClientUtils.closeQuietly(httpClient);
         }
     }
 
@@ -251,8 +252,8 @@ public final class HttpclientUtils {
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, Charsets.UTF_8);
         } finally {
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpResponse);
-            org.apache.http.client.utils.HttpClientUtils.closeQuietly(httpClient);
+            HttpClientUtils.closeQuietly(httpResponse);
+            HttpClientUtils.closeQuietly(httpClient);
         }
     }
 }
