@@ -53,4 +53,4 @@ ExcelUtils.read2table(inputPath);
 Multimap与Table对象可以转换为具体的业务对象。
 ```
 
-请参考[DEMO](src/test/java/com/yyfq/commons/poi/excel)
+请参考[DEMO](src/test/java/com/zxy/commons/poi/excel)
