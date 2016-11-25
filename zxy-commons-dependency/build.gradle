@@ -2,32 +2,12 @@ apply from: "${rootDir}/gradle/upload2Maven.gradle"
 
 dependencyManagement {
     dependencies {
-        // zxy commons dependencies
+        // yyfq commons dependencies
         dependencySet(group: "${group}", version: "${version}") {
-            entry "zxy-commons-codec"
-            entry "zxy-commons-dubbo"
-            entry "zxy-commons-email"
-            entry "zxy-commons-exec"
-            entry "zxy-commons-httpclient"
-            entry "zxy-commons-json"
-            entry "zxy-commons-lang"
-            entry "zxy-commons-memcache"
-            entry "zxy-commons-mq"
-            entry "zxy-commons-mybatis"
-            entry "zxy-commons-jetty"
-            entry "zxy-commons-quartz"
-            entry "zxy-commons-redis"
-            entry "zxy-commons-spring"
-            entry "zxy-commons-cache"
-            entry "zxy-commons-web"
-            entry "zxy-commons-rest"
-            entry "zxy-commons-modelmapper"
-            entry "zxy-commons-profiler"
-            entry "zxy-commons-test"
-            entry "zxy-commons-mongodb"
-            entry "zxy-commons-logger"
-            entry "zxy-commons-net"
-            entry "zxy-commons-apidocs"
+            parent.subprojects.findAll { it.name != name }.each { depProjectName ->
+                entry "${depProjectName}"
+            }
+//            entry "yyfq-commons-codec"
         }      
     }
 }
