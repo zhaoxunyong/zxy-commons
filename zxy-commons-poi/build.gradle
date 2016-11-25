@@ -1,0 +1,8 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    testCompile project(":zxy-commons-test")
+    
+    compile 'org.apache.poi:poi'
+    compile 'com.google.guava:guava'
+}

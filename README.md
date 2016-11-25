@@ -339,6 +339,18 @@ spring mongodb依赖模块。
 </dependency>
 ```
 
+# zxy-commons-poi
+POI工具类，暂时只实现对excel的操作。
+[具体请参考](zxy-commons-poi/README.md)
+```xml
+依赖添加：
+<dependency>
+    <groupId>com.zxy</groupId>
+    <artifactId>zxy-commons-poi</artifactId>
+    <version>${zxy_commons_version}</version>
+</dependency>
+```
+
 # zxy-commons-apidocs
 通过代码自动生成文档的依赖包。目前用swagger实现。
 [具体请参考](zxy-commons-apidocs/README.md)
