@@ -4,8 +4,8 @@ dependencyManagement {
     dependencies {
         // yyfq commons dependencies
         dependencySet(group: "${group}", version: "${version}") {
-            parent.subprojects.findAll { it.name != name }.each { depProjectName ->
-                entry "${depProjectName}"
+            parent.subprojects.findAll { it.name != name }.each {
+                entry "${it.name}"
             }
 //            entry "yyfq-commons-codec"
         }      
