@@ -1,0 +1,11 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile project(":zxy-commons-jetty")
+
+    compile 'com.netflix.hystrix:hystrix-core'
+    compile 'com.netflix.hystrix:hystrix-metrics-event-stream'
+    compile 'com.netflix.hystrix:hystrix-request-servlet'
+
+    compile 'com.netflix.hystrix:hystrix-javanica'
+}
