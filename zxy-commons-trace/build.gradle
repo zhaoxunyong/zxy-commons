@@ -1,0 +1,12 @@
+apply from: "${rootDir}/gradle/upload2Maven.gradle"
+
+dependencies {
+    compile 'io.zipkin.brave:brave-core'
+    compile 'io.zipkin.brave:brave-http'
+    compile 'io.zipkin.brave:brave-okhttp'
+    compile 'io.zipkin.brave:brave-spancollector-http'
+
+    compile 'io.zipkin.brave:brave-spring-web-servlet-interceptor'
+//    compile 'io.zipkin.brave:brave-web-servlet-filter'
+    compile 'io.zipkin.brave:brave-mysql'
+}
