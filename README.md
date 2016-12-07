@@ -363,6 +363,32 @@ POI工具类，暂时只实现对excel的操作。
 </dependency>
 ```
 
+# zxy-commons-hystrix
+hystrix依赖模块。
+[具体请参考](zxy-commons-hystrix/README.md)
+```xml
+依赖添加：
+<dependency>
+    <groupId>com.zxy</groupId>
+    <artifactId>zxy-commons-hystrix</artifactId>
+    <version>${zxy_commons_version}</version>
+</dependency>
+```
+
+
+# zxy-commons-trace
+trace分布式跟踪依赖模块(基于zipkin实现)。
+[具体请参考](zxy-commons-trace/README.md)
+```xml
+依赖添加：
+<dependency>
+    <groupId>com.zxy</groupId>
+    <artifactId>zxy-commons-trace</artifactId>
+    <version>${zxy_commons_version}</version>
+</dependency>
+```
+
+
 # TODO:
 后续会增加以下功能:
 - hbase
