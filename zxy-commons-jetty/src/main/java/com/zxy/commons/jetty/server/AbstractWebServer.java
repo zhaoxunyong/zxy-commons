@@ -20,12 +20,20 @@ package com.zxy.commons.jetty.server;
 
 import com.zxy.commons.jetty.exception.ServerErrorException;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServlet;
 import java.net.InetSocketAddress;
+import java.util.EnumSet;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Abstract jetty server
@@ -43,7 +51,31 @@ public abstract class AbstractWebServer {
 
     protected abstract Map<String, HttpServlet> getServlets();
 
-    protected Server startServer(String host, int port) {
+    protected Map<String, Filter> getFilters() {
+        return new HashMap<>();
+    }
+    
+    protected Set<EventListener> getEventListeners() {
+        return new HashSet<>();
+    }
+
+    /**
+     * startServer
+     * @param port port
+     * @return Server
+    */
+    public Server startServer(int port) {
+        return startServer(null, port);
+    }
+
+    /**
+     * startServer
+     * @param host host
+     * @param port port
+     * @return Server
+    */
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public Server startServer(String host, int port) {
         InetSocketAddress address = null;
         if (host == null || "".equals(host)) {
             address = new InetSocketAddress(port);
@@ -55,12 +87,30 @@ public abstract class AbstractWebServer {
         context.setContextPath(getContextPath());
         server.setHandler(context);
 
+//        handler.addServletWithMapping(HelloServlet.class, "/*");
+//        handler.addFilterWithMapping(HelloPrintingFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
+        
         Map<String, HttpServlet> servlets = getServlets();
         if(servlets != null && !servlets.isEmpty()) {
             for(Map.Entry<String, HttpServlet> entry : servlets.entrySet()) {
-                context.addServlet(new ServletHolder(entry.getValue()),entry.getKey());
+                context.addServlet(new ServletHolder(entry.getValue()), entry.getKey());
             }
         }
+        
+        Map<String, Filter> filters = getFilters();
+        if(filters != null && !filters.isEmpty()) {
+            for(Map.Entry<String, Filter> entry : filters.entrySet()) {
+                context.addFilter(new FilterHolder(entry.getValue()), entry.getKey(), EnumSet.of(DispatcherType.REQUEST));
+            }
+        }
+        
+        Set<EventListener> eventListeners = getEventListeners();
+        if(eventListeners != null && !eventListeners.isEmpty()) {
+            for(EventListener eventListener : eventListeners) {
+                context.addEventListener(eventListener);
+            }
+        }
+        
         try {
             server.start();
         } catch (Exception e) {
