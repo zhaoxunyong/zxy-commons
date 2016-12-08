@@ -11,6 +11,18 @@
 ```
 
 ### 使用说明
+#### IdUtils
+#### id生成类
+基于twitter-snowflake生成的long型id，[具体可参考](http://www.lanindex.com/twitter-snowflake%EF%BC%8C64%E4%BD%8D%E8%87%AA%E5%A2%9Eid%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/)
+```java
+IdUtils.genLongId();
+```
+
+生成String类型id，[具体可参考](src/main/java/com/yyfq/commons/lang/idgenerator/UUIDUtils.java)
+```java
+IdUtils.genLongId();
+```
+
 #### BytesUtils
 用于实现各种基本类型与byte数据之间的转换
 
