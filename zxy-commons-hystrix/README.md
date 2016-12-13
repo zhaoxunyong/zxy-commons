@@ -75,3 +75,25 @@ metrics.rollingPercentile.enabled=true
 访问路径为：http://ip:port/hystrix.steam
 ```
 
+### hystrix stream web界面的依赖说明
+由于有些项目是spring mvc，有些项目是纯后台java服务，为了保证依赖的最小化，没有自动进行以下功能的依赖管理。
+如果需要启动以下服务的话，请按照以下方式手动添加依赖：
+#### 基于spring mvc：
+需要手动添加以下依赖：
+```xml
+<dependency>
+    <groupId>com.zxy</groupId>
+    <artifactId>zxy-commons-web</artifactId>
+    <version>${zxy_commons_version}</version>
+</dependency>
+```
+
+#### 基于jetty:
+需要手动添加以下依赖：
+```xml
+<dependency>
+    <groupId>com.zxy</groupId>
+    <artifactId>zxy-commons-jetty</artifactId>
+    <version>${zxy_commons_version}</version>
+</dependency>
+```
