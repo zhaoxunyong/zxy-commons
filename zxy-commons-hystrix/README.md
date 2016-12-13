@@ -97,3 +97,6 @@ metrics.rollingPercentile.enabled=true
     <version>${zxy_commons_version}</version>
 </dependency>
 ```
+
+#### 效果：
+![image](wiki/images/hystrix-dashboard-single-row.png)
