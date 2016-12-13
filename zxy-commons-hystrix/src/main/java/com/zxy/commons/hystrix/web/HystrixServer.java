@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.zxy.commons.hystrix;
+package com.zxy.commons.hystrix.web;
 
 import java.util.Map;
 
@@ -31,13 +31,20 @@ import com.zxy.commons.jetty.server.AbstractWebServer;
 
 /** 
  * HystrixServer
- * 
+ * <p>注意：该服务通过jetty运行，需要在项目中添加以下依赖：
+ * <pre>
+ * &lt;dependency&gt;
+ *      &lt;groupId&gt;com.zxy&lt;/groupId&gt;
+ *      &lt;artifactId&gt;zxy-commons-jetty&lt;/artifactId&gt;
+ *      &lt;version&gt;${zxy_commons_version}&lt;/version&gt;
+ * &lt;/dependency&gt;
+ * </pre>
  * <p>
  * <a href="HystrixServer.java"><i>View Source</i></a>
  * 
  * @author zhaoxunyong@qq.com
  * @version 1.0
- * @since 1.0
+ * @since 1.0 
 */
 public class HystrixServer extends AbstractWebServer {
 

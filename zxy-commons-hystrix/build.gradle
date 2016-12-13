@@ -1,11 +1,18 @@
 apply from: "${rootDir}/gradle/upload2Maven.gradle"
 
 dependencies {
-    compile project(":zxy-commons-jetty")
+    compileOnly project(":zxy-commons-spring")
 
     compile 'com.netflix.hystrix:hystrix-core'
     compile 'com.netflix.hystrix:hystrix-metrics-event-stream'
     compile 'com.netflix.hystrix:hystrix-request-servlet'
 
     compile 'com.netflix.hystrix:hystrix-javanica'
+    
+    compileOnly 'javax.servlet:javax.servlet-api'
+    
+    // spring mvc项目时使用
+    compileOnly project(":zxy-commons-web")
+    // jetty项目时使用
+    compileOnly project(":zxy-commons-jetty")
 }
