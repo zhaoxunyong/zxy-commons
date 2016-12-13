@@ -26,13 +26,17 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -52,161 +56,137 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @version 1.0
  * @since 1.0
  */
-//@Configuration
-//@EnableWebMvc
+@Configuration
+@EnableWebMvc
 @EnableSwagger2
-//@Profile("dev")
-//@PropertySource(value = "classpath:apidocs.properties", ignoreResourceNotFound = true)
-public class ApplicationSwaggerConfig {
-//  @Value("${apidocs.groupName}")
-//  private String groupName;
-  
-  @Value("${apidocs.host}")
-  private String host;
-  
-  @Value("${apidocs.port}")
-  private String port;
-  
-  @Value("${apidocs.basepath}")
-  private String basePath;
-  
-//  @Value("${apidocs.enabled}")
-//  private boolean enabled;
-  
-  @Value("${apidocs.title}")
-  private String title;
+@Profile("swagger")
+@PropertySource(value = "classpath:apidocs.properties", ignoreResourceNotFound = true)
+@Conditional(SwaggerConfiguareCondition.class)
+public class ApplicationSwaggerConfig extends WebMvcConfigurerAdapter {
 
-  @Value("${apidocs.description}")
-  private String description;
+    @Autowired
+    private Environment env;
 
-  @Value("${apidocs.termsOfServiceUrl}")
-  private String termsOfServiceUrl;
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 
-  @Value("${apidocs.contact.name}")
-  private String contactName;
+    @Bean
+    public Docket appApi() {
+        Docket docket = new Docket(DocumentationType.SWAGGER_2);
+        //        if(groupName!=null && groupName.length() > 0) {
+        //            docket.groupName(groupName);
+        //        }
+        String host = env.getProperty("apidocs.host", "");
+        String port = env.getProperty("apidocs.port", "");
+        String basePath = env.getProperty("apidocs.basepath", "");
+        if(StringUtils.isEmpty(host)) {
+            try {
+                host = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                host = "localhost";
+            }
+        }
+        if(!StringUtils.isEmpty(port)) {
+            docket.host(host+":"+port);
+        } else {
+            docket.host(host);
+        }
+        if(!StringUtils.isEmpty(basePath)) {
+            docket.pathProvider(new AbstractPathProvider() {
 
-  @Value("${apidocs.contact.email}")
-  private String contactEmail;
+                @Override
+                protected String getDocumentationPath() {
+                    return "/";
+                }
 
-  @Value("${apidocs.contact.url}")
-  private String contactUrl;
-
-  @Value("${apidocs.version}")
-  private String version;
-  
-  /** 排除的url，多个用逗号分隔 */
-  @Value("${apidocs.excludes}")
-  private String excludes;
-  
-  /*//To resolve ${} in @Value
-  @Bean
-  public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
-      return new PropertySourcesPlaceholderConfigurer();
-  }*/
-  
-  @Bean
-  public Docket appApi() {
-      Docket docket = new Docket(DocumentationType.SWAGGER_2);
-//      if(groupName!=null && groupName.length() > 0) {
-//          docket.groupName(groupName);
-//      }
-      if(StringUtils.isEmpty(host)) {
-          try {
-              host = InetAddress.getLocalHost().getHostAddress();
-          } catch (UnknownHostException e) {
-              host = "localhost";
-          }
-      }
-      if(!StringUtils.isEmpty(port)) {
-          docket.host(host+":"+port);
-      } else {
-          docket.host(host);
-      }
-      if(!StringUtils.isEmpty(basePath)) {
-          docket.pathProvider(new AbstractPathProvider() {
-              
-              @Override
-              protected String getDocumentationPath() {
-                  return "/";
-              }
-              
-              @Override
-              protected String applicationPath() {
-                  return basePath;
-              }
-          });
-      }
-      ApiSelectorBuilder builder = docket.apiInfo(apiInfo())
-//        .enable(enabled)
-        .forCodeGeneration(true)
-        .select();
-      Predicate<String> paths = appPaths();
-      if(paths != null) {
-          builder.paths(paths);
-      }
-      return builder.build();
-  }
-
-//  @Bean
-//  public Docket appAllApi() {
-//    return new Docket(DocumentationType.SWAGGER_2)
-//        .groupName("all")
-//        .apiInfo(apiInfo())
-////        .enable(false)
-//        .forCodeGeneration(true)
-//        .select()
-////        .paths(appPaths())
-//        .build();
-//  }
-  
-  private Predicate<String> appPaths() {
-      List<Predicate<String>> predicates = new ArrayList<>();
-      if(excludes!=null && excludes.length() > 0) {
-         List<String> excludeList = Splitter.on(",").trimResults().splitToList(excludes);
-         for(String exclude : excludeList) {
-             predicates.add(regex(exclude));
-         }
-         return or(predicates);
-      }
-      return null;
-  }
-//
-//  private Predicate<String> userOnlyEndpoints() {
-//      return new Predicate<String>() {
-//          @Override
-//          public boolean apply(String input) {
-//              return input.contains("user");
-//          }
-//      };
-//  }
-//
-  private ApiInfo apiInfo() {
-      ApiInfoBuilder builder = new ApiInfoBuilder();
-      builder.title(title)
-        .description(description)
-        .termsOfServiceUrl(termsOfServiceUrl)
-        .contact(new Contact(contactName, contactUrl, contactEmail))
-//        .license("Apache License Version 2.0")
-//        .licenseUrl("https://github.com/springfox/springfox/blob/master/LICENSE")
-        .version(version);
+                @Override
+                protected String applicationPath() {
+                    return basePath;
+                }
+            });
+        }
+        ApiSelectorBuilder builder = docket.apiInfo(apiInfo())
+                //          .enable(enabled)
+                .forCodeGeneration(true)
+                .select();
+        Predicate<String> paths = appPaths();
+        if(paths != null) {
+            builder.paths(paths);
+        }
         return builder.build();
-  }
+    }
 
-//  @Bean
-//  public Docket configSpringfoxDocket_all() {
-//    return new Docket(DocumentationType.SWAGGER_2)
-//        .produces(Sets.newHashSet("application/json"))
-//        .consumes(Sets.newHashSet("application/json"))
-//        .protocols(Sets.newHashSet("http", "https"))
-//        .forCodeGeneration(true)
-//        .apiInfo(apiInfo())
-//        .select()
-////        .paths(regex(".*"))
-//        .build();
-//  }
+    //    @Bean
+    //    public Docket appAllApi() {
+    //      return new Docket(DocumentationType.SWAGGER_2)
+    //          .groupName("all")
+    //          .apiInfo(apiInfo())
+    ////          .enable(false)
+    //          .forCodeGeneration(true)
+    //          .select()
+    ////          .paths(appPaths())
+    //          .build();
+    //    }
 
-//  public void afterPropertiesSet() throws Exception {
-//
-//  }
+    private Predicate<String> appPaths() {
+        String excludes = env.getProperty("apidocs.excludes", "");
+        List<Predicate<String>> predicates = new ArrayList<>();
+        if(excludes!=null && excludes.length() > 0) {
+            List<String> excludeList = Splitter.on(",").trimResults().splitToList(excludes);
+            for(String exclude : excludeList) {
+                predicates.add(regex(exclude));
+            }
+            return or(predicates);
+        }
+        return null;
+    }
+    //
+    //    private Predicate<String> userOnlyEndpoints() {
+    //        return new Predicate<String>() {
+    //            @Override
+    //            public boolean apply(String input) {
+    //                return input.contains("user");
+    //            }
+    //        };
+    //    }
+    //
+    private ApiInfo apiInfo() {
+        String title = env.getProperty("apidocs.title", "");
+        String description = env.getProperty("apidocs.description", "");
+        String termsOfServiceUrl = env.getProperty("apidocs.termsOfServiceUrl", "");
+        String contactName = env.getProperty("apidocs.contact.name", "");
+        String contactEmail = env.getProperty("apidocs.contact.email", "");
+        String contactUrl = env.getProperty("apidocs.contact.url", "");
+        String version = env.getProperty("apidocs.version", "");
+        ApiInfoBuilder builder = new ApiInfoBuilder();
+        builder.title(title)
+                .description(description)
+                .termsOfServiceUrl(termsOfServiceUrl)
+                .contact(new Contact(contactName, contactUrl, contactEmail))
+                //          .license("Apache License Version 2.0")
+                //          .licenseUrl("https://github.com/springfox/springfox/blob/master/LICENSE")
+                .version(version);
+        return builder.build();
+    }
+
+    //    @Bean
+    //    public Docket configSpringfoxDocket_all() {
+    //      return new Docket(DocumentationType.SWAGGER_2)
+    //          .produces(Sets.newHashSet("application/json"))
+    //          .consumes(Sets.newHashSet("application/json"))
+    //          .protocols(Sets.newHashSet("http", "https"))
+    //          .forCodeGeneration(true)
+    //          .apiInfo(apiInfo())
+    //          .select()
+    ////          .paths(regex(".*"))
+    //          .build();
+    //    }
+
+    //    public void afterPropertiesSet() throws Exception {
+    //
+    //    }
 
 }

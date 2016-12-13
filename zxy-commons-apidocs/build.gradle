@@ -5,7 +5,7 @@ apply from: "${rootDir}/gradle/upload2Maven.gradle"
 //  }
 
 dependencies {
-    compile project(":zxy-commons-spring")
+    compile project(":zxy-commons-web")
     
     compile 'io.springfox:springfox-swagger-ui'
     compile 'io.springfox:springfox-swagger2'
