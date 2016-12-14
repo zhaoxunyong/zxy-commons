@@ -38,6 +38,7 @@ import com.google.common.io.Resources;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import com.netflix.hystrix.contrib.requestservlet.HystrixRequestContextServletFilter;
 import com.netflix.hystrix.contrib.requestservlet.HystrixRequestLogViaResponseHeaderServletFilter;
+import com.zxy.commons.hystrix.HystrixProperties;
 
 /**
  * HystrixInitializer
@@ -58,6 +59,11 @@ import com.netflix.hystrix.contrib.requestservlet.HystrixRequestLogViaResponseHe
  */
 public class HystrixInitializer implements WebApplicationInitializer {
     
+    /**
+     * 此处还在web加载中，spring的properties机制读取不到
+     * 
+     * @return Properties
+    */
     private Properties load() {
         Properties properties = new Properties();
         InputStream inputStream = null;
@@ -88,7 +94,7 @@ public class HystrixInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) throws ServletException {
 //        WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(container);
         Properties properties = load();
-        String enabled = properties.getProperty("hystrix.stream.enabled");
+        String enabled = properties.getProperty(HystrixProperties.HYSTRIX_STREAM_ENABLED);
         if (StringUtils.isBlank(enabled) || "true".equalsIgnoreCase(enabled)) {
 
             // AnnotationConfigWebApplicationContext ctx = new

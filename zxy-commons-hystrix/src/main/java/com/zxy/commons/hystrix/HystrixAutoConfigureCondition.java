@@ -21,7 +21,6 @@ package com.zxy.commons.hystrix;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import com.netflix.hystrix.Hystrix;
@@ -36,7 +35,6 @@ import com.netflix.hystrix.Hystrix;
  * @version 1.0
  * @since 1.0 
 */
-@PropertySource(value="classpath:hystrix.properties", ignoreResourceNotFound=true)
 public class HystrixAutoConfigureCondition implements Condition {
     
     @Override public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {

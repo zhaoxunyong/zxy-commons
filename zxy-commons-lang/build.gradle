@@ -12,6 +12,7 @@ dependencies {
     compile 'commons-io:commons-io'
     compile 'commons-codec:commons-codec'
     compile 'commons-beanutils:commons-beanutils'
-    compile 'com.esotericsoftware:kryo'
+    
+    compileOnly 'com.esotericsoftware:kryo'
     
 }
