@@ -26,16 +26,18 @@ import org.apache.commons.net.ftp.FTPClient;
  * <p>
  * <a href="FtpCallbacks.java"><i>View Source</i></a>
  * 
+ * @param <T> return object type
  * @author zhaoxunyong@qq.com
  * @version 1.0
  * @since 1.0 
 */
 @FunctionalInterface
-public interface FtpCallback {
+public interface FtpCallback<T> {
     /**
      * ftp callback
      * 
      * @param client ftpclient
+     * @return value
     */
-    public void process(FTPClient client);
+    public T process(FTPClient client);
 }

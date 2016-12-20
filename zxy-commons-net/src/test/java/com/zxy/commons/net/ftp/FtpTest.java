@@ -70,7 +70,7 @@ public class FtpTest {
 //                .ftpClientConfig(ftpClientConfig)
                 .build();
         FtpUtils.ftpHandle(ftpConfig, client -> {
-
+            return null;
         });
 
 //        FtpUtils.handle(ftpConfig, new FtpCallback() {
@@ -98,7 +98,7 @@ public class FtpTest {
                 .isFtps(true)
                 .build();
         FtpUtils.ftpHandle(ftpConfig, client -> {
-
+            return null;
         });
     }
     
@@ -122,6 +122,7 @@ public class FtpTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return null;
         });
         
 //        FtpUtils.handle(ftpConfig, new FtpCallback() {

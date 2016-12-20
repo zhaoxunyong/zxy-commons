@@ -33,6 +33,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 
 /**
  * FtpUtils
@@ -52,10 +53,12 @@ public final class FtpUtils {
     /**
      * FTP handle
      * 
+     * @param <T> return object type
      * @param ftpConfig ftp config
      * @param callback ftp callback
+     * @return value
     */
-    public static void ftpHandle(FtpConfig ftpConfig, FtpCallback callback) {
+    public static <T> T ftpHandle(FtpConfig ftpConfig, FtpCallback<T> callback) {
         FTPClient client = null;
         if(ftpConfig.isFtps() && ftpConfig.getSslContext() != null) {
             client = new FTPSClient(ftpConfig.getSslContext());
@@ -83,7 +86,7 @@ public final class FtpUtils {
                 client.disconnect();
                 throw new NetException("FTP server refused connection.");
             }
-            callback.process(client);
+            return callback.process(client);
         } catch(Exception e) {
             throw new NetException(e);
         } finally {
@@ -107,10 +110,12 @@ public final class FtpUtils {
     /**
      * FTP handle
      * 
+     * @param <T> return object type
      * @param ftpConfig ftp config
      * @param callback ftp callback
+     * @return value
     */
-    public static void sftpHandle(SftpConfig ftpConfig, SftpCallback callback) {
+    public static <T> T sftpHandle(SftpConfig ftpConfig, SftpCallback<T> callback) {
         Session session = null;
         ChannelSftp client = null;
         try {
@@ -132,7 +137,7 @@ public final class FtpUtils {
                 throw new NetException("FTP server refused connection.");
             }
             LOGGER.trace("Connected to host: {}, port: {}.", host, port);
-            callback.process(client);
+            return callback.process(client);
         } catch (JSchException e) {
             throw new NetException(e);
         } finally {
@@ -173,5 +178,28 @@ public final class FtpUtils {
 //                session.disconnect();
 //            }
 //        }
+    }
+    
+    /**
+     * mkdirs
+     * 
+     * @param client ChannelSftp
+     * @param path path
+     * @throws SftpException SftpException
+    */
+    public static void mkdirs(ChannelSftp client, String path) throws SftpException {
+        String[] folders = path.split("/");
+        if (folders != null && folders.length > 0) {
+            for (String folder : folders) {
+                if (folder.length() > 0) {
+                    try {
+                        client.cd(folder);
+                    } catch (SftpException e) {
+                        client.mkdir(folder);
+                        client.cd(folder);
+                    }
+                }
+            }
+        }
     }
 }

@@ -26,17 +26,19 @@ import com.jcraft.jsch.ChannelSftp;
  * <p>
  * <a href="FtpCallbacks.java"><i>View Source</i></a>
  * 
+ * @param <T> return object type
  * @author zhaoxunyong@qq.com
  * @version 1.0
  * @since 1.0 
 */
 @FunctionalInterface
-public interface SftpCallback {
+public interface SftpCallback<T> {
     
     /**
      * sftp callback
      * 
      * @param client ChannelSftp
+     * @return value
     */
-    public void process(ChannelSftp client);
+    public T process(ChannelSftp client);
 }
