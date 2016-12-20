@@ -88,6 +88,9 @@ allprojects {
         	//}
 			url groupUrl 
 		} 
+//        maven { url "http://maven.aliyun.com/nexus/content/repositories/central/" }
+//        maven { url "http://maven.aliyun.com/nexus/content/repositories/gradleplugins/" }
+//        maven { url "http://maven.aliyun.com/nexus/content/repositories/jcenter/" }
 	}
 }
 
