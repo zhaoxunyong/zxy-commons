@@ -94,8 +94,10 @@ public class HystrixInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) throws ServletException {
 //        WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(container);
         Properties properties = load();
-        String enabled = properties.getProperty(HystrixProperties.HYSTRIX_STREAM_ENABLED);
-        if (StringUtils.isBlank(enabled) || "true".equalsIgnoreCase(enabled)) {
+        String enabled = properties.getProperty(HystrixProperties.HYSTRIX_ENABLED);
+        String streamEnabled = properties.getProperty(HystrixProperties.HYSTRIX_STREAM_ENABLED);
+        if ((StringUtils.isBlank(enabled) || "true".equalsIgnoreCase(enabled))
+                && (StringUtils.isBlank(streamEnabled) || "true".equalsIgnoreCase(streamEnabled))) {
 
             // AnnotationConfigWebApplicationContext ctx = new
             // AnnotationConfigWebApplicationContext();

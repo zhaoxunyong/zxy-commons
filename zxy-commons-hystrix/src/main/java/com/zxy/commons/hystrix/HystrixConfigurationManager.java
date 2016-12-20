@@ -51,7 +51,6 @@ public class HystrixConfigurationManager {
      * 
      * @return Void
     */
-    @Bean
 //    @Scope(value = "singleton")
 //    @HystrixCommand(commandProperties = {
 //            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
@@ -64,7 +63,8 @@ public class HystrixConfigurationManager {
 //                        @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "12"),
 //                        @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "1440")
 //        })
-    public Void hystirxInit() {
+    @Bean
+    public AbstractConfiguration configuration() {
         // http://blog.csdn.net/zheng0518/article/details/51713900
         AbstractConfiguration configuration = ConfigurationManager.getConfigInstance();
         // 表示所属的group，一个group共用线程池. 默认值：getClass().getSimpleName();
@@ -72,6 +72,8 @@ public class HystrixConfigurationManager {
         // 默认值：当前执行方法名
         // configuration.setProperty("commandKey", value);
         
+        String straegy = properties.getEnv().getProperty(HystrixProperties.EXECUTION_ISOLATION_STRATEGY, "THREAD");
+        configuration.setProperty(HystrixProperties.EXECUTION_ISOLATION_STRATEGY, straegy);
         // 超时时间. 默认值：1000
         // 在THREAD模式下，达到超时时间，可以中断. 在SEMAPHORE模式下，会等待执行完成后，再去判断是否超时
         // 设置标准：有retry，99meantime+avg meantime. 没有retry，99.5meantime
@@ -81,6 +83,9 @@ public class HystrixConfigurationManager {
         // 线程池coreSize. 默认值：10 设置标准：qps*99meantime+breathing room
         String coreSize = properties.getEnv().getProperty(HystrixProperties.CORE_SIZE, String.valueOf(Runtime.getRuntime().availableProcessors() * 2));
         configuration.setProperty(HystrixProperties.CORE_SIZE, coreSize);
+        // 最大线程池大小，不配置默认为coreSize
+        String maximumSize = properties.getEnv().getProperty(HystrixProperties.MAXIMUM_SIZE, coreSize);
+        configuration.setProperty(HystrixProperties.MAXIMUM_SIZE, maximumSize);
         // 请求等待队列. 默认值：-1 如果使用正数，队列将从SynchronizeQueue改为LinkedBlockingQueue
         String maxQueueSize = properties.getEnv().getProperty(HystrixProperties.MAX_QUEUE_SIZE, "-1");
         configuration.setProperty(HystrixProperties.MAX_QUEUE_SIZE, maxQueueSize);
@@ -120,7 +125,7 @@ public class HystrixConfigurationManager {
         String requestLogEnabled = properties.getEnv().getProperty(HystrixProperties.REQUESTLOG_ENABLED, "true");
         configuration.setProperty(HystrixProperties.REQUESTLOG_ENABLED, requestLogEnabled);
         
-        // 设置滑动统计的桶数量。默认10。metrics.rollingStats.timeInMilliseconds必须能被这个值整除。
+        /*// 设置滑动统计的桶数量。默认10。metrics.rollingStats.timeInMilliseconds必须能被这个值整除。
         String metricsRollingStatsNumBuckets = properties.getEnv().getProperty(HystrixProperties.METRICS_ROLLINGSTATS_NUMBUCKETS, "10");
         configuration.setProperty(HystrixProperties.METRICS_ROLLINGSTATS_NUMBUCKETS, metricsRollingStatsNumBuckets);
         // 设置滑动窗口的统计时间。熔断器使用这个时间。默认10s
@@ -128,8 +133,8 @@ public class HystrixConfigurationManager {
         configuration.setProperty(HystrixProperties.METRICS_ROLLINGSTATS_TIMEINMILLISECONDS, metricsRollingStatsTimeInMilliseconds);
         // 设置执行时间是否被跟踪，并且计算各个百分比，50%,90%等的时间。默认true。
         String metricsRollingPercentileEnabled = properties.getEnv().getProperty(HystrixProperties.METRICS_ROLLINGPERCENTILE_ENABLED, "true");
-        configuration.setProperty(HystrixProperties.METRICS_ROLLINGPERCENTILE_ENABLED, metricsRollingPercentileEnabled);
-        return null;
+        configuration.setProperty(HystrixProperties.METRICS_ROLLINGPERCENTILE_ENABLED, metricsRollingPercentileEnabled);*/
+        return configuration;
     }
     
     /**

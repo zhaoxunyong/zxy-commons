@@ -45,27 +45,29 @@ public class HystrixProperties {
     public final static String HYSTRIX_STREAM_HOST = "hystrix.stream.host";
     public final static String HYSTRIX_STREAM_PORT = "hystrix.stream.port";
     
-    public final static String ISOLATION_TIMEOUT_INMILLISECONDS = "execution.isolation.thread.timeoutInMilliseconds";
-    public final static String CORE_SIZE = "coreSize";
-    public final static String MAX_QUEUE_SIZE = "maxQueueSize";
-    public final static String KEEP_ALIVETIME_MINUTES = "keepAliveTimeMinutes";
-    public final static String QUEUE_SIZE_REJECTION_THRESHOLD = "queueSizeRejectionThreshold";
+    public final static String EXECUTION_ISOLATION_STRATEGY = "hystrix.command.default.execution.isolation.strategy";
+    public final static String ISOLATION_TIMEOUT_INMILLISECONDS = "hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds";
+    public final static String CORE_SIZE = "hystrix.threadpool.default.coreSize";
+    public final static String MAXIMUM_SIZE = "hystrix.threadpool.default.maximumSize";
+    public final static String MAX_QUEUE_SIZE = "hystrix.threadpool.default.maxQueueSize";
+    public final static String KEEP_ALIVETIME_MINUTES = "hystrix.threadpool.default.keepAliveTimeMinutes";
+    public final static String QUEUE_SIZE_REJECTION_THRESHOLD = "hystrix.threadpool.default.queueSizeRejectionThreshold";
     
-    public final static String EXECUTION_TIMEOUT_ENABLED = "execution.timeout.enabled";
-    public final static String EXECUTION_INTERRUPTONTIMEOUT = "execution.isolation.thread.interruptOnTimeout";
+    public final static String EXECUTION_TIMEOUT_ENABLED = "hystrix.command.default.execution.timeout.enabled";
+    public final static String EXECUTION_INTERRUPTONTIMEOUT = "hystrix.command.default.execution.isolation.thread.interruptOnTimeout";
     
-    public final static String CIRCUITBREAKER_REQUEST_VOLUME_THRESHOLD = "circuitBreaker.requestVolumeThreshold";
-    public final static String CIRCUITBREAKER_SLEEP_WINDOW_INMILLISECONDS = "circuitBreaker.sleepWindowInMilliseconds";
-    public final static String CIRCUITBREAKER_ERROR_THRESHOLD_PERCENTAGE = "circuitBreaker.errorThresholdPercentage";
-    public final static String CIRCUITBREAKER_FORCE_CLOSED = "circuitBreaker.forceClosed";
-    public final static String CIRCUITBREAKER_ENABLED = "circuitBreaker.enabled";
+    public final static String CIRCUITBREAKER_REQUEST_VOLUME_THRESHOLD = "hystrix.command.default.circuitBreaker.requestVolumeThreshold";
+    public final static String CIRCUITBREAKER_SLEEP_WINDOW_INMILLISECONDS = "hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds";
+    public final static String CIRCUITBREAKER_ERROR_THRESHOLD_PERCENTAGE = "hystrix.command.default.circuitBreaker.errorThresholdPercentage";
+    public final static String CIRCUITBREAKER_FORCE_CLOSED = "hystrix.command.default.circuitBreaker.forceClosed";
+    public final static String CIRCUITBREAKER_ENABLED = "hystrix.command.default.circuitBreaker.enabled";
     
-    public final static String REQUESTCACHE_ENABLED = "requestCache.enabled";
-    public final static String REQUESTLOG_ENABLED = "requestLog.enabled";
+    public final static String REQUESTCACHE_ENABLED = "hystrix.command.default.requestCache.enabled";
+    public final static String REQUESTLOG_ENABLED = "hystrix.command.default.requestLog.enabled";
     
-    public final static String METRICS_ROLLINGSTATS_NUMBUCKETS = "metrics.rollingStats.numBuckets";
-    public final static String METRICS_ROLLINGSTATS_TIMEINMILLISECONDS = "metrics.rollingStats.timeInMilliseconds";
-    public final static String METRICS_ROLLINGPERCENTILE_ENABLED = "metrics.rollingPercentile.enabled";
+//    public final static String METRICS_ROLLINGSTATS_NUMBUCKETS = "hystrix.command.default.metrics.rollingStats.numBuckets";
+//    public final static String METRICS_ROLLINGSTATS_TIMEINMILLISECONDS = "hystrix.command.default.metrics.rollingStats.timeInMilliseconds";
+//    public final static String METRICS_ROLLINGPERCENTILE_ENABLED = "hystrix.command.default.metrics.rollingPercentile.enabled";
 
 
     @Autowired
