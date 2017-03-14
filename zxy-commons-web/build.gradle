@@ -7,7 +7,7 @@ dependencies {
     
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework:spring-context-support'
-    compile 'com.baidu:fis-velocity-tools'
+    //compile 'com.baidu:fis-velocity-tools'
     compile 'org.apache.velocity:velocity'
     compile('org.apache.velocity:velocity-tools') {
         exclude group: 'org.apache.struts', module: '*'
